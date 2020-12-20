@@ -23,8 +23,6 @@ void draw();
 #define cols 5
 #define rows 3
 
-
-
 int grid[rows][cols] = {
 	{ 1, 1, 0, 0, 1 },
 	{ 1, 0, 1, 0, 1 }, 
@@ -46,7 +44,6 @@ int playerSize = 50;
 int playerX = 0;
 int playerY = 210;
 
-Image crash;
 Image ps1;
 
 unsigned long cachedPadValue;
@@ -66,12 +63,11 @@ int main() {
 void initialize() {
 	initializeScreen();
 	PadInit(0);	
-	setBackgroundColor(createColor(55, 55, 55));
+	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
 
 	
-	ps1 = createImage(img_ps1);
-	crash = createImage(img_crash);
+	ps1 = createImage(img_ball);
 	playerX = (320-playerSize)/2;
 
 
@@ -104,10 +100,11 @@ void draw() {
 
 		}
 	}
+	player = moveBox(player, playerX, playerY);
+	ps1 = moveImage(ps1, playerX+playerSize/2-32/2, playerY-32);
+	drawImage(ps1);
 	drawBox(player);
 	drawBox(frame);
-	drawImage(crash);
-	drawImage(ps1);
 }
 
 void updateControls() {
@@ -127,6 +124,4 @@ void updateControls() {
 			playerX += 10;
 		}
 	}
-
-	player = moveBox(player, playerX, playerY);
 }
