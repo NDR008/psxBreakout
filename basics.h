@@ -50,14 +50,6 @@ typedef struct {
 	GsSPRITE sprite;
 } Image;
 
-int 		SCREEN_WIDTH, SCREEN_HEIGHT;
-GsOT 		orderingTable[2];
-GsOT_TAG  	minorOrderingTable[2][1<<OT_LENGTH];
-PACKET 		GPUOutputPacket[2][PACKETMAX];
-short 		currentBuffer;
-Color 		systemBackgroundColor;
-
-
 Image createImage(unsigned char imageData[]);
 Image moveImage(Image image, int x, int y);
 Color createColor(int r, int g, int b);
@@ -73,5 +65,7 @@ void setScreenMode(int mode);
 void setBackgroundColor(Color color);
 void initializeScreen();
 void initializeDebugFont();
-void initializeOrderingTable(GsOT* orderingTable);
+void initializeOrderingTable();
 void display();
+void clearDisplay();
+void clearVRAM();
