@@ -8,7 +8,7 @@
  * 		fixed the include crap
  */
 
-#include "sys/types.h"
+#include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <libgte.h>
