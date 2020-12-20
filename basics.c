@@ -185,10 +185,14 @@ void setBackgroundColor(Color color) {
 void initializeScreen() {
 	if (*(char *)0xbfc7ff52=='E') setScreenMode(SCREEN_MODE_PAL);
    	else setScreenMode(SCREEN_MODE_NTSC);
-   	
+
+	SetDispMask(1);
+	ResetGraph(0);
+	clearVRAM();
 	GsInitGraph(SCREEN_WIDTH, SCREEN_HEIGHT, GsINTER|GsOFSGPU, 1, 0); //Set up interlation..
 	GsDefDispBuff(0, 0, 0, SCREEN_HEIGHT);	//..and double buffering.
 	systemBackgroundColor = createColor(0, 0, 255);
+	initializeOrderingTable();
 }
 
 void initializeDebugFont() {
@@ -196,7 +200,7 @@ void initializeDebugFont() {
 	SetDumpFnt(FntOpen(5, 5, 320, 240, 0, 512)); //Sets the dumped font for use with FntPrint();
 }
 
-void initializeOrderingTable(GsOT* orderingTable){
+void initializeOrderingTable(){
 	GsClearOt(0,0,&orderingTable[GsGetActiveBuff()]);
 
 	// initialise the ordering tables
@@ -211,11 +215,24 @@ void initializeOrderingTable(GsOT* orderingTable){
 
 void display() {
 	currentBuffer = GsGetActiveBuff();
-	FntFlush(-1);
-	GsClearOt(0, 0, &orderingTable[currentBuffer]);
 	DrawSync(0);
 	VSync(0);
 	GsSwapDispBuff();
 	GsSortClear(systemBackgroundColor.r, systemBackgroundColor.g, systemBackgroundColor.b, &orderingTable[currentBuffer]);
 	GsDrawOt(&orderingTable[currentBuffer]);
+}
+
+void clearDisplay() {
+	currentBuffer = GsGetActiveBuff();
+	FntFlush(-1);
+	GsSetWorkBase((PACKET*)GPUOutputPacket[currentBuffer]);
+	GsClearOt(0, 0, &orderingTable[currentBuffer]);
+}
+
+void clearVRAM() {
+	RECT rectTL;
+	setRECT(&rectTL, 0, 0, 1024, 512);
+	ClearImage2(&rectTL, 0, 0, 0);
+    DrawSync(0);
+    return;
 }

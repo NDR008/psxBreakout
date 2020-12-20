@@ -6,8 +6,10 @@
 #include <libgte.h>
 #include <libgpu.h>
 #include <libgs.h>
+#include "images.h"
 #include "basics.h"
 #include "timerz.h"
+
 
 #define OT_LENGTH 1
 #define PACKETMAX 300
@@ -44,6 +46,9 @@ int playerSize = 50;
 int playerX = 0;
 int playerY = 210;
 
+Image crash;
+Image ps1;
+
 unsigned long cachedPadValue;
 
 int main() {
@@ -52,17 +57,24 @@ int main() {
 	while(1) {
 		TrialTimer=incTimer(TrialTimer);
 		updateControls(); // do the staff
+		clearDisplay();
 		draw();	 // draw it
 		display(); // dump it to the screen
 	}
 }
 
 void initialize() {
-	playerX = (320-playerSize)/2;
 	initializeScreen();
-	initializeDebugFont();
-	PadInit(0);
+	PadInit(0);	
 	setBackgroundColor(createColor(55, 55, 55));
+	initializeDebugFont();
+
+	
+	ps1 = createImage(img_ps1);
+	crash = createImage(img_crash);
+	playerX = (320-playerSize)/2;
+
+
 	
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
@@ -94,11 +106,11 @@ void draw() {
 	}
 	drawBox(player);
 	drawBox(frame);
-	//drawLine(line);
+	drawImage(crash);
+	drawImage(ps1);
 }
 
 void updateControls() {
-	
 	cachedPadValue = PadRead(0);
 	printf("\nbut this not? or?  %d", cachedPadValue);
 
