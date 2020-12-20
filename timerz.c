@@ -6,7 +6,7 @@
  *  Very basic library to count time based on vsync
  */
 
-#include "sys/types.h"
+#include <sys/types.h>
 #include "timerz.h"
 #include <libetc.h>
 
