@@ -1,0 +1,6 @@
+basics.o: basics.c ../psyq/include/sys/types.h ../psyq/include/stdlib.h \
+ ../psyq/include/stddef.h ../psyq/include/abs.h ../psyq/include/convert.h \
+ ../psyq/include/malloc.h ../psyq/include/qsort.h ../psyq/include/rand.h \
+ ../psyq/include/stdio.h ../psyq/include/libgte.h \
+ ../psyq/include/libgpu.h ../psyq/include/libgs.h \
+ ../psyq/include/libetc.h basics.h
