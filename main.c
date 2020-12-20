@@ -19,6 +19,8 @@
 void initialize();
 void updateControls();
 void draw();
+void ballMotion();
+void initialiseScene();
 
 #define cols 5
 #define rows 3
@@ -40,9 +42,18 @@ int brickSizeX = 40;
 int xOff = 30;
 int yOff = 30;
 
+int motion = 0;
+
 int playerSize = 50;
 int playerX = 0;
 int playerY = 210;
+
+int ballX;
+int ballY;
+int velX=2;
+int velY=2;
+
+int gameOn = 1;
 
 Image ps1;
 
@@ -52,6 +63,7 @@ int main() {
 	initialize();
 
 	while(1) {
+		printf("\nballX: %d, playerX: %d", ballX, playerX);
 		TrialTimer=incTimer(TrialTimer);
 		updateControls(); // do the staff
 		clearDisplay();
@@ -65,13 +77,13 @@ void initialize() {
 	PadInit(0);	
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
-
-	
+	initialiseScene();
 	ps1 = createImage(img_ball);
+
+}
+
+void initialiseScene() {
 	playerX = (320-playerSize)/2;
-
-
-	
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (1) {
@@ -81,6 +93,7 @@ void initialize() {
 
 		}
 	}
+	motion = 0;
 	player = createBox(createColor(200, 50, 50), playerX, playerY, playerX+50, playerY+10);
 	frame = createBox(createColor(200, 155, 155), framing, framing, 320-framing, 240-framing);
 	TrialTimer = createTimer();
@@ -88,9 +101,6 @@ void initialize() {
 
 void draw() {
 	FntPrint("Breakout Game Time ");
-	FntPrint("%02d : %02d : %d", TrialTimer.min, TrialTimer.sec, TrialTimer.vsync);
-	printf("\n%02d : %02d : %d", TrialTimer.min, TrialTimer.sec, TrialTimer.vsync);
-	printf("\nthis works");
 
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
@@ -101,7 +111,14 @@ void draw() {
 		}
 	}
 	player = moveBox(player, playerX, playerY);
-	ps1 = moveImage(ps1, playerX+playerSize/2-32/2, playerY-32);
+	if (!motion) { 
+		ballX = playerX+playerSize/2-32/2;
+		ballY = playerY-32;
+	}
+	else{
+		ballMotion();
+	}
+	ps1 = moveImage(ps1, ballX, ballY); 
 	drawImage(ps1);
 	drawBox(player);
 	drawBox(frame);
@@ -109,19 +126,43 @@ void draw() {
 
 void updateControls() {
 	cachedPadValue = PadRead(0);
-	printf("\nbut this not? or?  %d", cachedPadValue);
-
 	if(cachedPadValue & PADLleft) {
 		if (framing < playerX) { 
-		//if(1){
-			playerX -= 10;
+			playerX -= 5;
 		}
 	}
 
 	if(cachedPadValue & PADLright) {
 		if (320-framing-playerSize > playerX) { 
-		//if(1){
-			playerX += 10;
+			playerX += 5;
 		}
 	}
+
+	if((cachedPadValue & PADstart) && !(motion))
+	{
+		motion = 1;
+	}
+}
+
+void ballMotion() {
+	if (ballY > playerY-32 && ballY < playerY-32+10) {
+		if ((ballX < playerX+playerSize) && (ballX>playerX-32) )
+		{
+			velY = -2;
+		}
+		else {
+			initialiseScene();
+			return;
+		}
+	}
+	if (ballY <=0+16) {
+		velY = 2;
+	}
+
+
+	if (ballX > 320-framing-32) { velX = -4;}
+	if (ballX < framing) { velX = +4;}
+
+	ballY = ballY + velY;
+	ballX = ballX + velX;
 }
