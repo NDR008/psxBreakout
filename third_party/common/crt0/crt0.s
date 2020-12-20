@@ -24,49 +24,25 @@ SOFTWARE.
 
 */
 
-.include "common/hardware/hwregs.inc"
-
     .section .start, "ax", @progbits
-    .set noreorder
     .align 2
     .global main
     .global _start
     .type _start, @function
 
 _start:
-    lw    $t2, SBUS_DEV8_CTRL
-    lui   $t0, 8
-    lui   $t1, 1
-_check_dev8:
-    bge   $t2, $t0, _store_dev8
-    nop
-    b     _check_dev8
-    add   $t2, $t1
-_store_dev8:
-    sw    $t2, SBUS_DEV8_CTRL
-
     la    $t0, __bss_start
     la    $t1, __bss_end
 
-    beq   $t0, $t1, _bss_init_skip
-    nop
+    beq   $t0, $t1, bss_init_skip
 
-_bss_init:
+bss_init:
     sw    $0, 0($t0)
     addiu $t0, 4
-    bne   $t0, $t1, _bss_init
-    nop
+    bne   $t0, $t1, bss_init
 
-_bss_init_skip:
+bss_init_skip:
 
-    la    $a1, _mainargv
+    li    $a0, 0
+    li    $a1, 0
     j     main
-    li    $a0, 1
-
-    .section .rodata, "a", @progbits
-    .align 2
-_mainargv:
-    .word _progname
-    .word 0
-_progname:
-    .string "PSX.EXE"

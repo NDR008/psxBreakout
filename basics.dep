@@ -1,6 +1,8 @@
-basics.o: basics.c ../psyq/include/sys/types.h ../psyq/include/stdlib.h \
- ../psyq/include/stddef.h ../psyq/include/abs.h ../psyq/include/convert.h \
- ../psyq/include/malloc.h ../psyq/include/qsort.h ../psyq/include/rand.h \
- ../psyq/include/stdio.h ../psyq/include/libgte.h \
- ../psyq/include/libgpu.h ../psyq/include/libgs.h \
- ../psyq/include/libetc.h basics.h
+basics.o: basics.c third_party/psyq/include/sys/types.h \
+ third_party/psyq/include/stdlib.h third_party/psyq/include/stddef.h \
+ third_party/psyq/include/abs.h third_party/psyq/include/convert.h \
+ third_party/psyq/include/malloc.h third_party/psyq/include/qsort.h \
+ third_party/psyq/include/rand.h third_party/psyq/include/stdio.h \
+ third_party/psyq/include/libgte.h third_party/psyq/include/libgpu.h \
+ third_party/psyq/include/libgs.h third_party/psyq/include/libetc.h \
+ basics.h
