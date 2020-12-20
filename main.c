@@ -15,14 +15,14 @@
 #define __stacksize 0x00004000
 
 void initialize();
-void update();
+void updateControls();
 void draw();
 
-PSXTimer TrialTimer;
-
-Box box;
 #define cols 5
 #define rows 3
+
+
+
 int grid[rows][cols] = {
 	{ 1, 1, 0, 0, 1 },
 	{ 1, 0, 1, 0, 1 }, 
@@ -30,6 +30,9 @@ int grid[rows][cols] = {
 Box bricks[cols][rows];
 Box player;
 Box frame;
+int framing=15;
+
+PSXTimer TrialTimer;
 
 int brickSpacing = 10;
 int brickSizeY = 15;
@@ -37,26 +40,30 @@ int brickSizeX = 40;
 int xOff = 30;
 int yOff = 30;
 
-int playerX = 100;
+int playerSize = 50;
+int playerX = 0;
 int playerY = 210;
+
+unsigned long cachedPadValue;
 
 int main() {
 	initialize();
 
 	while(1) {
-		update(); // do the staff
-		draw();	 // draw it
 		TrialTimer=incTimer(TrialTimer);
+		updateControls(); // do the staff
+		draw();	 // draw it
 		display(); // dump it to the screen
 	}
 }
 
 void initialize() {
+	playerX = (320-playerSize)/2;
 	initializeScreen();
 	initializeDebugFont();
 	PadInit(0);
 	setBackgroundColor(createColor(55, 55, 55));
-	box = createBox(createColor(0, 0, 255), xOff, yOff, xOff+brickSizeX, yOff+brickSizeY);
+	
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (1) {
@@ -66,18 +73,17 @@ void initialize() {
 
 		}
 	}
-	player = createBox(createColor(200, 50, 50), playerX, playerY, playerX+100, playerY+10);
-	frame = createBox(createColor(200, 155, 155), 15, 15, 300, playerY+20);
+	player = createBox(createColor(200, 50, 50), playerX, playerY, playerX+50, playerY+10);
+	frame = createBox(createColor(200, 155, 155), framing, framing, 320-framing, 240-framing);
 	TrialTimer = createTimer();
-}
-
-void update() {
 }
 
 void draw() {
 	FntPrint("Breakout Game Time ");
 	FntPrint("%02d : %02d : %d", TrialTimer.min, TrialTimer.sec, TrialTimer.vsync);
 	printf("\n%02d : %02d : %d", TrialTimer.min, TrialTimer.sec, TrialTimer.vsync);
+	printf("\nthis works");
+
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (grid[j][i]) {
@@ -91,3 +97,24 @@ void draw() {
 	//drawLine(line);
 }
 
+void updateControls() {
+	
+	cachedPadValue = PadRead(0);
+	printf("\nbut this not? or?  %d", cachedPadValue);
+
+	if(cachedPadValue & PADLleft) {
+		if (framing < playerX) { 
+		//if(1){
+			playerX -= 10;
+		}
+	}
+
+	if(cachedPadValue & PADLright) {
+		if (320-framing-playerSize > playerX) { 
+		//if(1){
+			playerX += 10;
+		}
+	}
+
+	player = moveBox(player, playerX, playerY);
+}

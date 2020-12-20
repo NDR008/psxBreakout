@@ -124,9 +124,9 @@ Line moveLine(Line line, int x1, int y1, int x2, int y2) {
 
 Box moveBox(Box box, int x1, int y1) {
 	int currentWidth = box.line[0].line.x1 - box.line[0].line.x0;
-	int currentHeight = box.line[2].line.y1 - box.line[2].line.y1;
+	int currentHeight = box.line[2].line.y1 - box.line[2].line.y0;
 	int x2 = x1 + currentWidth;
-	int y2 = y1 + currentWidth;
+	int y2 = y1 + currentHeight;
 	box.line[0] = moveLine(box.line[0], x1, y1, x2, y1);
 	box.line[1] = moveLine(box.line[1], x1, y2, x2, y2);
 	box.line[2] = moveLine(box.line[2], x1, y1, x1, y2);
