@@ -21,6 +21,7 @@ void updateControls();
 void draw();
 void ballMotion();
 void initialiseScene();
+Image scaleImage(Image img, int xScale, int yScale);
 
 #define cols 5
 #define rows 3
@@ -42,28 +43,27 @@ int brickSizeX = 40;
 int xOff = 30;
 int yOff = 30;
 
-int motion = 0;
-
 int playerSize = 50;
 int playerX = 0;
 int playerY = 210;
 
+int motion = 0;
 int ballX;
 int ballY;
-int velX=2;
+int ballR = 0;
+int velX=4;
 int velY=2;
+int ballRad=16/2;
+char hit = 'z'; 
 
-int gameOn = 1;
-
-Image ps1;
-
+Image ballSprite;
 unsigned long cachedPadValue;
 
 int main() {
 	initialize();
 
 	while(1) {
-		printf("\nballX: %d, playerX: %d", ballX, playerX);
+		//printf("\nballX: %d, playerX: %d", ballX, playerX);
 		TrialTimer=incTimer(TrialTimer);
 		updateControls(); // do the staff
 		clearDisplay();
@@ -78,12 +78,13 @@ void initialize() {
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
 	initialiseScene();
-	ps1 = createImage(img_ball);
-
+	ballSprite = createImage(img_ball);
+	ballSprite = scaleImage(ballSprite, 50, 50);
 }
 
 void initialiseScene() {
 	playerX = (320-playerSize)/2;
+	ballR = 0;
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (1) {
@@ -112,14 +113,15 @@ void draw() {
 	}
 	player = moveBox(player, playerX, playerY);
 	if (!motion) { 
-		ballX = playerX+playerSize/2-32/2;
-		ballY = playerY-32;
+		ballX = playerX+playerSize/2;
+		ballY = playerY-ballRad;
 	}
 	else{
 		ballMotion();
 	}
-	ps1 = moveImage(ps1, ballX, ballY); 
-	drawImage(ps1);
+	ballSprite = rotImage(ballSprite, ballR);
+	ballSprite = moveImage(ballSprite, ballX, ballY); 
+	drawImage(ballSprite);
 	drawBox(player);
 	drawBox(frame);
 }
@@ -145,24 +147,67 @@ void updateControls() {
 }
 
 void ballMotion() {
-	if (ballY > playerY-32 && ballY < playerY-32+10) {
-		if ((ballX < playerX+playerSize) && (ballX>playerX-32) )
+	//detect hitting the bottom limit
+	if ((ballY+ballRad >= playerY) && (ballY+ballRad <= playerY+10)) {
+		hit = 'd';
+	}
+	//detect hitting the upper frame
+	else if (ballY-ballRad < framing) {
+		hit = 'u';
+		//velY = abs(velY);
+	}
+
+	// special case of out of play
+	if (hit == 'd' ){
+		if ((ballX-ballRad < playerX+playerSize) && (ballX+ballRad>playerX) )
 		{
-			velY = -2;
+			hit = 'd';
+			//velY = -1*abs(velY);
 		}
 		else {
+			hit = 'z';
 			initialiseScene();
 			return;
 		}
 	}
-	if (ballY <=0+16) {
-		velY = 2;
+
+	if (ballX+ballRad> 320-framing) { 
+		//velX = -1*abs(velX);
+		hit = 'r';
+	}
+	else if (ballX-ballRad < framing) { 
+		//velX = abs(velX);
+		hit = 'l';
 	}
 
+	printf("\nchar is: %c", hit);
+	switch (hit)
+	{
+		case 'u': {
+			velY = abs(velY);
+			printf("+y");
+			break;
+		}
+		case 'd': {
+			velY = -1*abs(velY);
+			printf("-y");
+			break;
+		}
+		case 'l': {
+			velX = abs(velX);
+			printf("+x");
+			break;
+		}
+		case 'r': {
+			velX = -1*abs(velX);
+			printf("-x");
+			break;
+		}
+	}
 
-	if (ballX > 320-framing-32) { velX = -4;}
-	if (ballX < framing) { velX = +4;}
+	hit = 'z';
 
 	ballY = ballY + velY;
 	ballX = ballX + velX;
+	ballR += 2*velY*velX;
 }
