@@ -94,6 +94,20 @@ Inputs are done via a controller:
 The game tracks the position of the ball's X-Y and checks if it hit up/down/left/right and based on that it changes the velX and velY parameters. Also there is a rotation parameter which is the product of velX and velY.
 This is why the rotation direction switches when ball changes direction in 1 of the x/y axis.
 
+## Hack Part
+So the collision detection is very crude and quasi brutefoce. 
+It tries to check at the time of drawing each box if the ball is touching perpedicularly the bricks.  
+
+This leads to an issue of the ball protruding diagonally. So the hack is to detect some pixels within the brick walls.
+It visually works - so I left it at that. (It is not physics engine but a simple breakout).
+
+## To Do
+Add a lives counter. (easy)
+Continue screen. (easy)
+Scaling player bar. (maybe easy)
+Bricks that need double hits. (should be easy)
+Random stages with standard size bricks. (kinda easy)
+Variable brick sizes. (can be done but... a lot of rework)
 
 # Setting Up My Machine
 An imperfect write up to get started.
