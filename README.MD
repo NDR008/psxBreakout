@@ -20,7 +20,10 @@ I absolutely did not regret it! And learning pointers, and that discipline orien
 2020 has been a tough year, but I encountered some really cool people on a PSX developers on a discord channel. They thought me about the PSX serial port, and Unirom which could be used to send homebrew programs.
 This put me on a shopping spree of buying hardware.
 
-The biggest limitation in PSX development has been getting code compiled since the unofficially available official tool chain is design for old machines using based on an old version of GCC.
+The biggest limitation in PSX development has been getting code compiled since the unofficially available official tool chain is design for old machines using based on an old version of GCC. There was an opportunity to help with this (see next section).
+
+In addition I had always beeen a believer in constant backups of a word file, but I realised code is harder to version control and make backups off... and this is when I realised that git is useful not only for collaborative work but also for managing updating, tracking, back-tracking your own code.
+So getting familiar with git usage was one of the hidden learning/movations for me too.
 
 Last but not least... I wanted to impress my 2 kids with showing them that their dad can make a simple PlayStation game!!
 
