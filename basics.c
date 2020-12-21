@@ -69,8 +69,8 @@ Image createImage(unsigned char imageData[]) {
 	image.sprite.v=image.tim_data.py;								// position within timfile for sprite
 	image.sprite.cx = image.tim_data.cx;            // CLUT location x
 	image.sprite.cy = image.tim_data.cy;            // CLUT location y
-	image.sprite.mx = 0;                            // rotation x coord
-	image.sprite.my = 0;                            // rotation y coord
+	image.sprite.mx = 16;                            // rotation x coord
+	image.sprite.my = 16;                            // rotation y coord
 	image.sprite.scalex = ONE;                      // scale x (ONE = 100%)
 	image.sprite.scaley = ONE;                      // scale y (ONE = 100%)
 	image.sprite.rotate = 0;                        // rotation
@@ -81,6 +81,18 @@ Image moveImage(Image image, int x, int y) {
 	image.sprite.x = x;
 	image.sprite.y = y;
 	return image;
+}
+
+Image scaleImage(Image img, int xScale, int yScale){ //0 to 100;
+	img.sprite.scalex = (int) xScale*4096/100;
+	img.sprite.scaley = (int) yScale*4096/100;
+	return img;
+}
+
+Image rotImage(Image img, int rotation){ //0 to 360;
+	//int franction = (rotation / 100) % 100;
+	img.sprite.rotate = rotation*4096;
+	return img;
 }
 
 void drawImage(Image image) {

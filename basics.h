@@ -52,6 +52,10 @@ typedef struct {
 
 Image createImage(unsigned char imageData[]);
 Image moveImage(Image image, int x, int y);
+void drawImage(Image image);
+Image scaleImage(Image img, int xScale, int yScale);
+Image rotImage(Image img, int rotation);
+
 Color createColor(int r, int g, int b);
 Line createLine(Color color, int x1, int y1, int x2, int y2);
 Box createBox(Color color, int x1, int y1, int x2, int y2);
