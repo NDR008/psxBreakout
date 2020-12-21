@@ -21,6 +21,7 @@ void updateControls();
 void draw();
 void ballMotion();
 void initialiseScene();
+void initialiseLevel();
 Image scaleImage(Image img, int xScale, int yScale);
 
 #define cols 5
@@ -51,10 +52,12 @@ int motion = 0;
 int ballX;
 int ballY;
 int ballR = 0;
-int velX=4;
+int velX=1;
 int velY=2;
 int ballRad=16/2;
 char hit = 'z'; 
+int bricksCounter=0;
+int bricksLeft=0;
 
 Image ballSprite;
 unsigned long cachedPadValue;
@@ -77,6 +80,7 @@ void initialize() {
 	PadInit(0);	
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
+//	initialiseLevel()
 	initialiseScene();
 	ballSprite = createImage(img_ball);
 	ballSprite = scaleImage(ballSprite, 50, 50);
@@ -85,13 +89,14 @@ void initialize() {
 void initialiseScene() {
 	playerX = (320-playerSize)/2;
 	ballR = 0;
+	bricksCounter = 0;
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
-			if (1) {
+			if (grid[j][i]) {
 				bricks[i][j] = createBox(createColor(50, 50, 255), xOff+(brickSizeX+brickSpacing)*i, yOff+(brickSizeY+brickSpacing)*j, 
 											xOff+brickSizeX+(brickSizeX+brickSpacing)*i, yOff+brickSizeY+(brickSizeY+brickSpacing)*j);
+				bricksCounter++;
 			}
-
 		}
 	}
 	motion = 0;
@@ -101,16 +106,16 @@ void initialiseScene() {
 }
 
 void draw() {
-	FntPrint("Breakout Game Time ");
-
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (grid[j][i]) {
 				drawBox(bricks[i][j]);
 			}
-
 		}
 	}
+
+	FntPrint("Breakout Game :   %d bricksleft", bricksCounter);
+
 	player = moveBox(player, playerX, playerY);
 	if (!motion) { 
 		ballX = playerX+playerSize/2;
@@ -147,18 +152,46 @@ void updateControls() {
 }
 
 void ballMotion() {
-	//detect hitting the bottom limit
-	if ((ballY+ballRad >= playerY) && (ballY+ballRad <= playerY+10)) {
-		hit = 'd';
-	}
-	//detect hitting the upper frame
-	else if (ballY-ballRad < framing) {
-		hit = 'u';
-		//velY = abs(velY);
+	for (int i=0; i<cols; i++){
+		for (int j=0; j<rows; j++){
+			if (grid[j][i]) {
+				printf("\nbrick");
+
+				int leftX, rightX, upperY, lowerY = 0;
+				leftX = xOff+(brickSizeX+brickSpacing)*i;
+				rightX = xOff+brickSizeX+(brickSizeX+brickSpacing)*i;
+				upperY = yOff+(brickSizeY+brickSpacing)*j;
+				lowerY = yOff+brickSizeY+(brickSizeY+brickSpacing)*j;
+
+				//Hit brick from above
+				if ((ballY + ballRad >= upperY && ballY + ballRad <= upperY+ballRad) && ( ballX >= leftX && ballX <= rightX) ){
+					hit = 'd';
+					bricksCounter--;
+					(grid[j][i]) = 0;
+				}
+				else if ((ballY - ballRad <= lowerY && ballY - ballRad >= lowerY-ballRad) && ( ballX >= leftX && ballX <= rightX) ){
+					hit = 'u';
+					(grid[j][i]) = 0;
+					bricksCounter--;
+				}
+				else if ((ballX + ballRad >= leftX && ballX + ballRad <= leftX+ballRad ) && ( ballY <= lowerY && ballX >= upperY) ){
+					hit = 'r';
+					(grid[j][i]) = 0;
+					bricksCounter--;
+				}
+				else if ((ballX-ballRad <= rightX && ballX -ballRad >= rightX-ballRad ) && ( ballY <= lowerY && ballX >= upperY) ){
+					hit = 'l';
+					(grid[j][i]) = 0;
+					bricksCounter--;
+				}
+			}
+		}
 	}
 
-	// special case of out of play
-	if (hit == 'd' ){
+	printf("brick");
+
+	//detect hitting the bottom limit
+	if ((ballY+ballRad >= playerY) && (ballY+ballRad <= playerY+10)) {
 		if ((ballX-ballRad < playerX+playerSize) && (ballX+ballRad>playerX) )
 		{
 			hit = 'd';
@@ -169,6 +202,11 @@ void ballMotion() {
 			initialiseScene();
 			return;
 		}
+	}
+	//detect hitting the upper frame
+	else if (ballY-ballRad < framing) {
+		hit = 'u';
+		//velY = abs(velY);
 	}
 
 	if (ballX+ballRad> 320-framing) { 
@@ -206,7 +244,6 @@ void ballMotion() {
 	}
 
 	hit = 'z';
-
 	ballY = ballY + velY;
 	ballX = ballX + velX;
 	ballR += 2*velY*velX;
