@@ -52,7 +52,7 @@ Image createImage(unsigned char imageData[]) {
 	image.sprite.y = 0;                          	// draw at y coord
 	image.sprite.w = image.tim_data.pw * 2;         	// width of sprite
 	image.sprite.h = image.tim_data.ph;             // height of sprite
-	printf("Sprite mes {attribute = %d, x=%d, y=%zd, w=%d, h=%d}\n", image.sprite.attribute, image.sprite.x, image.sprite.y, image.sprite.w, image.sprite.h);
+	printf("Sprite mes {attribute = %d, x=%d, y=%d, w=%d, h=%d}\n", image.sprite.attribute, image.sprite.x, image.sprite.y, image.sprite.w, image.sprite.h);
 
 	image.sprite.tpage = GetTPage(
 			1,   									// 0=4-bit, 1=8-bit, 2=16-bit
