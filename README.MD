@@ -152,3 +152,5 @@ Sickle, Nicolas Noble and Danhans42 for the insane patience they had with gettin
 Nicolas and Sickle helped a lot with getting the SDK working under gcc-mipsel.  
 Schnappy, Nicolas, Wituz, Sickle, Danhans42, Lameguy64, and many others helped here and there with coding issues especially those related to PSX development.  
 Final thanks to the people that came way before me at reverse engineering a lot of the PSX to have a clue where to begin with.  
+  
+![It works!](/sickle_test_onHW.jpg "This is a sample image of it running on a real PSX.")
