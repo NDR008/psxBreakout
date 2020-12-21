@@ -62,7 +62,6 @@ Image createImage(unsigned char imageData[]) {
 	);
 	printf("Tpage info {tpage = %d}\n", image.sprite.tpage);
 
-
 	image.sprite.r = 128;							// color red blend
 	image.sprite.g = 128;							// color green blend
 	image.sprite.b = 128;							// color blue blend
@@ -76,7 +75,6 @@ Image createImage(unsigned char imageData[]) {
 	image.sprite.scaley = ONE;                      // scale y (ONE = 100%)
 	image.sprite.rotate = 0;                        // rotation
 	return image;
-
 }
 
 Image moveImage(Image image, int x, int y) {
@@ -85,6 +83,10 @@ Image moveImage(Image image, int x, int y) {
 	return image;
 }
 
+void drawImage(Image image) {
+	currentBuffer = GsGetActiveBuff();
+	GsSortSprite(&image.sprite, &orderingTable[currentBuffer], 0);
+}
 
 //Creates a color from RGB
 Color createColor(int r, int g, int b) {
@@ -138,7 +140,6 @@ Box transposeBox(Box box, int x1, int y1) {
 	return box;
 }
 
-
 void drawLine(Line line) {
 	DrawPrim(&line.line);
 }
@@ -149,12 +150,6 @@ void drawBox(Box box) {
 		DrawPrim(&box.line[i].line);
 	}
 }
-
-void drawImage(Image image) {
-	currentBuffer = GsGetActiveBuff();
-	GsSortSprite(&image.sprite, &orderingTable[currentBuffer], 0);
-}
-
 
 //Set the screen mode to either SCREEN_MODE_PAL or SCREEN_MODE_NTSC
 void setScreenMode(int mode) {
