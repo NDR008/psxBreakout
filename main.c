@@ -100,7 +100,7 @@ void initialize() {
 	PadInit(0);	
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
-	colourList[0]=createColor(50,50,50); //player colour
+	colourList[0]=createColor(150, 150, 50); //player colour
 	colourList[1]=createColor(50, 50, 255);
 	colourList[2]=createColor(50, 255, 50);
 	colourList[3]=createColor(255, 50, 50);
