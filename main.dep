@@ -1,5 +1,4 @@
 main.o: main.c third_party/psyq/include/sys/types.h \
- /usr/lib/gcc-cross/mipsel-linux-gnu/9/include/stdbool.h \
  third_party/psyq/include/libetc.h third_party/psyq/include/libpad.h \
  third_party/psyq/include/stdlib.h third_party/psyq/include/stddef.h \
  third_party/psyq/include/abs.h third_party/psyq/include/convert.h \

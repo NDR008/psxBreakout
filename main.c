@@ -48,7 +48,7 @@ int level = 0;
 Box bricks[cols][rows];
 Box player;
 Box frame;
-int framing=15;
+int framing=16;
 
 PSXTimer TrialTimer;
 
@@ -105,14 +105,17 @@ void initialize() {
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
 	colourList[0]=createColor(150, 150, 50); //player colour
-	colourList[1]=createColor(50, 50, 255);
-	colourList[2]=createColor(50, 255, 50);
-	colourList[3]=createColor(255, 50, 50);
+	colourList[1]=createColor(200, 200, 50);
+	colourList[2]=createColor( 50, 200, 50);
+	colourList[3]=createColor(200,  50, 50);
 	initialiseLevel();
 	initialiseScene();
 	ballSprite = createImage(img_ball);
 	ballSprite = scaleImage(ballSprite, 50, 50);
 	playerSprite = createImage(img_playerBar);
+	bgSprite = createImage(img_wall1);
+	bgSprite = scaleImage(bgSprite, 200, 200);
+	bgSprite = moveImage(bgSprite, 160, 120);
 }
 
 void initialiseGame() {
@@ -134,7 +137,6 @@ void initialiseScene() {
 }
 
 void draw() {
-	//drawImage(bgSprite);	
 	bricksCounter = 0;
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
@@ -148,7 +150,7 @@ void draw() {
 	}
 	
 
-	FntPrint("Bricks: %d   Lives: %d   Level: %d", bricksCounter, lives, level+1);
+	FntPrint("    [ Bricks: %d   Lives: %d   Level: %d ]", bricksCounter, lives, level+1);
 
 	player = moveBox(player, playerX, playerY);
 	if (!motion) { 
@@ -163,7 +165,6 @@ void draw() {
 	drawImage(ballSprite);
 	playerSprite = moveImage(playerSprite, playerX+playerSize/2, playerY+5);
 	drawImage(playerSprite);
-	//drawBox(player);
 	drawBox(frame);
 	drawImage(bgSprite);
 }

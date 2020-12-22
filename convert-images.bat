@@ -105,7 +105,7 @@ echo Header images.h successfully generated
 :: Delete the working directories
 ::if exist "images\tim" rmdir /s /q "images\tim"
 if exist "images\8bit" rmdir /s /q "images\8bit"
-if exist "images\tim" rmdir /s /q "images\tim"
+::if exist "images\tim" rmdir /s /q "images\tim"
 if exist "images\headers" rmdir /s /q "images\headers"
 
 PAUSE
