@@ -69,8 +69,8 @@ Image createImage(unsigned char imageData[]) {
 	image.sprite.v=image.tim_data.py;								// position within timfile for sprite
 	image.sprite.cx = image.tim_data.cx;            // CLUT location x
 	image.sprite.cy = image.tim_data.cy;            // CLUT location y
-	image.sprite.mx = 16;                            // rotation x coord
-	image.sprite.my = 16;                            // rotation y coord
+	image.sprite.mx = image.sprite.w/2;                            // rotation x coord
+	image.sprite.my = image.sprite.h/2;                            // rotation y coord
 	image.sprite.scalex = ONE;                      // scale x (ONE = 100%)
 	image.sprite.scaley = ONE;                      // scale y (ONE = 100%)
 	image.sprite.rotate = 0;                        // rotation

@@ -78,7 +78,11 @@ int bricksCounter=0;
 int bricksLeft=0;
 
 Image ballSprite;
+Image playerSprite;
+Image bgSprite;
 unsigned long cachedPadValue;
+
+int pause=0;
 
 int main() {
 	initialize();
@@ -108,6 +112,7 @@ void initialize() {
 	initialiseScene();
 	ballSprite = createImage(img_ball);
 	ballSprite = scaleImage(ballSprite, 50, 50);
+	playerSprite = createImage(img_playerBar);
 }
 
 void initialiseGame() {
@@ -123,12 +128,13 @@ void initialiseScene() {
 	ballR = 0;
 	bricksCounter = 0;
 	motion = 0;
-	player = createBox(colourList[0], playerX, playerY, playerX+50, playerY+10);
+	player = createBox(colourList[0], playerX, playerY, playerX+playerSize, playerY+10);
 	frame = createBox(createColor(200, 155, 155), framing, framing, 320-framing, 240-framing);
 	TrialTimer = createTimer();
 }
 
 void draw() {
+	//drawImage(bgSprite);	
 	bricksCounter = 0;
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
@@ -140,6 +146,7 @@ void draw() {
 			}
 		}
 	}
+	
 
 	FntPrint("Bricks: %d   Lives: %d   Level: %d", bricksCounter, lives, level+1);
 
@@ -154,31 +161,56 @@ void draw() {
 	ballSprite = rotImage(ballSprite, ballR);
 	ballSprite = moveImage(ballSprite, ballX, ballY); 
 	drawImage(ballSprite);
-	drawBox(player);
+	playerSprite = moveImage(playerSprite, playerX+playerSize/2, playerY+5);
+	drawImage(playerSprite);
+	//drawBox(player);
 	drawBox(frame);
+	drawImage(bgSprite);
 }
 
 void updateControls() {
 	cachedPadValue = PadRead(0);
+	int speed;
+
+	if((cachedPadValue & PADstart ) && (motion)) {
+		pause = !pause;
+	}
+
+	if (pause) { return; }
+
+	if(cachedPadValue & PADRdown) {
+		speed = 3;
+	}
+	else {
+		speed = 1;
+	}
+
 	if(cachedPadValue & PADLleft) {
 		if (framing < playerX) { 
-			playerX -= 5;
+			playerX -= speed;
+		}
+		if (framing > playerX) {
+			playerX= framing;
 		}
 	}
 
 	if(cachedPadValue & PADLright) {
 		if (320-framing-playerSize > playerX) { 
-			playerX += 5;
+			playerX += speed;
+		}
+		if (320-framing-playerSize < playerX) {
+			playerX= 320-framing-playerSize;
 		}
 	}
 
-	if((cachedPadValue & PADstart) && !(motion))
+	if((cachedPadValue & PADRright ) && !(motion))
 	{
 		motion = 1;
 	}
 }
 
 void ballMotion() {
+	if (pause) { return; }
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (grid[j][i]>0) {
