@@ -48,7 +48,7 @@ int level = 0;
 Box bricks[cols][rows];
 Box player;
 Box frame;
-int framing=15;
+int framing=16;
 
 PSXTimer TrialTimer;
 
@@ -78,7 +78,11 @@ int bricksCounter=0;
 int bricksLeft=0;
 
 Image ballSprite;
+Image playerSprite;
+Image bgSprite;
 unsigned long cachedPadValue;
+
+int pause=0;
 
 int main() {
 	initialize();
@@ -101,13 +105,17 @@ void initialize() {
 	setBackgroundColor(createColor(30, 30, 30));
 	initializeDebugFont();
 	colourList[0]=createColor(150, 150, 50); //player colour
-	colourList[1]=createColor(50, 50, 255);
-	colourList[2]=createColor(50, 255, 50);
-	colourList[3]=createColor(255, 50, 50);
+	colourList[1]=createColor(200, 200, 50);
+	colourList[2]=createColor( 50, 200, 50);
+	colourList[3]=createColor(200,  50, 50);
 	initialiseLevel();
 	initialiseScene();
 	ballSprite = createImage(img_ball);
 	ballSprite = scaleImage(ballSprite, 50, 50);
+	playerSprite = createImage(img_playerBar);
+	bgSprite = createImage(img_wall1);
+	bgSprite = scaleImage(bgSprite, 200, 200);
+	bgSprite = moveImage(bgSprite, 160, 120);
 }
 
 void initialiseGame() {
@@ -123,7 +131,7 @@ void initialiseScene() {
 	ballR = 0;
 	bricksCounter = 0;
 	motion = 0;
-	player = createBox(colourList[0], playerX, playerY, playerX+50, playerY+10);
+	player = createBox(colourList[0], playerX, playerY, playerX+playerSize, playerY+10);
 	frame = createBox(createColor(200, 155, 155), framing, framing, 320-framing, 240-framing);
 	TrialTimer = createTimer();
 }
@@ -140,8 +148,9 @@ void draw() {
 			}
 		}
 	}
+	
 
-	FntPrint("Bricks: %d   Lives: %d   Level: %d", bricksCounter, lives, level+1);
+	FntPrint("    [ Bricks: %d   Lives: %d   Level: %d ]", bricksCounter, lives, level+1);
 
 	player = moveBox(player, playerX, playerY);
 	if (!motion) { 
@@ -154,31 +163,55 @@ void draw() {
 	ballSprite = rotImage(ballSprite, ballR);
 	ballSprite = moveImage(ballSprite, ballX, ballY); 
 	drawImage(ballSprite);
-	drawBox(player);
+	playerSprite = moveImage(playerSprite, playerX+playerSize/2, playerY+5);
+	drawImage(playerSprite);
 	drawBox(frame);
+	drawImage(bgSprite);
 }
 
 void updateControls() {
 	cachedPadValue = PadRead(0);
+	int speed;
+
+	if((cachedPadValue & PADstart ) && (motion)) {
+		pause = !pause;
+	}
+
+	if (pause) { return; }
+
+	if(cachedPadValue & PADRdown) {
+		speed = 3;
+	}
+	else {
+		speed = 1;
+	}
+
 	if(cachedPadValue & PADLleft) {
 		if (framing < playerX) { 
-			playerX -= 5;
+			playerX -= speed;
+		}
+		if (framing > playerX) {
+			playerX= framing;
 		}
 	}
 
 	if(cachedPadValue & PADLright) {
 		if (320-framing-playerSize > playerX) { 
-			playerX += 5;
+			playerX += speed;
+		}
+		if (320-framing-playerSize < playerX) {
+			playerX= 320-framing-playerSize;
 		}
 	}
 
-	if((cachedPadValue & PADstart) && !(motion))
+	if((cachedPadValue & PADRright ) && !(motion))
 	{
 		motion = 1;
 	}
 }
 
 void ballMotion() {
+	if (pause) { return; }
 	for (int i=0; i<cols; i++){
 		for (int j=0; j<rows; j++){
 			if (grid[j][i]>0) {
