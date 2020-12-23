@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
             "type": "gdb",
             "request": "launch",
@@ -13,7 +12,7 @@
             "gdbpath": "/usr/bin/gdb-multiarch",
             "cwd": "${workspaceRoot}",
             "autorun": [
-                "target remote localhost:3333",
+                "target remote 192.168.188.86:3333",
                 "symbol-file cs50x.elf",
                 "load cs50x.elf",
                 "monitor reset halt",
