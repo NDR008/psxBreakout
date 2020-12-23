@@ -131,6 +131,7 @@ sudo apt install clang-10
 5) Clone recursively (this might have been unnecessary - other [option](https://github.com/JonathanDotCel/helloworld_and_flappycredits))  
 [Redux](https://github.com/grumpycoders/pcsx-redux)  
 Copied several files (especially crt0.s)
+More recently, I adapted this crt0.s and ld files from [here](https://github.com/JonathanDotCel/helloworld_and_flappycredits/tree/master/nugget)
 But I also use the redux emulator (which you could compile from this source or download his builds).
 
 6) This is the converted psyq libs  
