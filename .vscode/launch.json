@@ -15,34 +15,12 @@
             "autorun": [
                 "target remote localhost:3333",
                 "symbol-file cs50x.elf",
-                "set substitute-path /project .",
-                "symbol-file cs50x.elf",
+                "load cs50x.elf",
                 "monitor reset halt",
                 "tbreak main",
                 "continue",
             ],
             "valuesFormatting": "parseText"
         },
-
-        {
-            "name": "(gdb) Launch PCSX-Redux",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/pcsx-redux",
-            "args": [],
-            "stopAtEntry": false,
-            "preLaunchTask": "make",
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        }
     ]
 }
