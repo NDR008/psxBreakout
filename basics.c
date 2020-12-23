@@ -8,13 +8,6 @@
  * 		fixed the include crap
  */
 
-#include <sys/types.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <libgte.h>
-#include <libgpu.h>
-#include <libgs.h>
-#include <libetc.h>
 #include "basics.h"
 
 GsOT 		orderingTable[2];

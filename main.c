@@ -9,6 +9,7 @@
 #include "images.h"
 #include "basics.h"
 #include "timerz.h"
+#include "logic.h"
 
 
 #define OT_LENGTH 1
@@ -46,7 +47,6 @@ int maxLevel = 2;
 int level = 0;
 	
 Box bricks[cols][rows];
-Box player;
 Box frame;
 int framing=16;
 
@@ -58,9 +58,7 @@ int brickSizeX = 40;
 int xOff = 40;
 int yOff = 30;
 
-int playerSize = 50;
-int playerX = 0;
-int playerY = 210;
+Player player1;
 int gameWon = 0;
 int lives = 3;
 
@@ -78,7 +76,6 @@ int bricksCounter=0;
 int bricksLeft=0;
 
 Image ballSprite;
-Image playerSprite;
 Image bgSprite;
 unsigned long cachedPadValue;
 
@@ -112,7 +109,6 @@ void initialize() {
 	initialiseScene();
 	ballSprite = createImage(img_ball);
 	ballSprite = scaleImage(ballSprite, 50, 50);
-	playerSprite = createImage(img_playerBar);
 	bgSprite = createImage(img_wall1);
 	bgSprite = scaleImage(bgSprite, 200, 200);
 	bgSprite = moveImage(bgSprite, 160, 120);
@@ -127,12 +123,10 @@ void initialiseGame() {
 }
 
 void initialiseScene() {
-	playerX = (320-playerSize)/2;
+	player1 = createPlayer(img_playerBar, 320/2, 210, 50, 10, framing+50/2, 320-framing-50/2);
 	ballR = 0;
 	bricksCounter = 0;
 	motion = 0;
-	player = createBox(colourList[0], playerX, playerY, playerX+playerSize, playerY+10);
-	frame = createBox(createColor(200, 155, 155), framing, framing, 320-framing, 240-framing);
 	TrialTimer = createTimer();
 }
 
@@ -149,13 +143,11 @@ void draw() {
 		}
 	}
 	
-
 	FntPrint("    [ Bricks: %d   Lives: %d   Level: %d ]", bricksCounter, lives, level+1);
 
-	player = moveBox(player, playerX, playerY);
 	if (!motion) { 
-		ballX = playerX+playerSize/2;
-		ballY = playerY-ballRad;
+		ballX = player1.xPos;
+		ballY = player1.yPos-player1.ySize/2-ballRad;
 	}
 	else{
 		ballMotion();
@@ -163,15 +155,14 @@ void draw() {
 	ballSprite = rotImage(ballSprite, ballR);
 	ballSprite = moveImage(ballSprite, ballX, ballY); 
 	drawImage(ballSprite);
-	playerSprite = moveImage(playerSprite, playerX+playerSize/2, playerY+5);
-	drawImage(playerSprite);
-	drawBox(frame);
+	drawImage(player1.image);
 	drawImage(bgSprite);
 }
 
 void updateControls() {
 	cachedPadValue = PadRead(0);
 	int speed;
+	int xPos;
 
 	if((cachedPadValue & PADstart ) && (motion)) {
 		pause = !pause;
@@ -187,25 +178,24 @@ void updateControls() {
 	}
 
 	if(cachedPadValue & PADLleft) {
-		if (framing < playerX) { 
-			playerX -= speed;
-		}
-		if (framing > playerX) {
-			playerX= framing;
-		}
+		printf("\nxPos %d, speed %d, rangeL %d, rangeR, %d", player1.xPos, -speed, player1.rangeL, player1.rangeR);
+		//xPos = saturate(player1.xPos, -speed, player1.rangeL, player1.rangeR);
+		xPos = -speed;
+		printf("\nxPos %d, speed %d, rangeL %d, rangeR, %d", player1.xPos, -speed, player1.rangeL, player1.rangeR);
+		player1 = updatePlayer(player1, xPos);
+		printf("  new xPos %d", player1.xPos);
 	}
 
 	if(cachedPadValue & PADLright) {
-		if (320-framing-playerSize > playerX) { 
-			playerX += speed;
-		}
-		if (320-framing-playerSize < playerX) {
-			playerX= 320-framing-playerSize;
-		}
+		printf("\nxPos %d, speed %d, rangeL %d, rangeR, %d", player1.xPos, +speed, player1.rangeL, player1.rangeR);
+		//xPos = saturate(player1.xPos, +speed, player1.rangeL, player1.rangeR);
+		xPos= +speed;
+		printf("\nxPos %d, speed %d, rangeL %d, rangeR, %d", player1.xPos, +speed, player1.rangeL, player1.rangeR);
+		player1 = updatePlayer(player1, xPos);
+		printf("  new xPos %d", player1.xPos);
 	}
 
-	if((cachedPadValue & PADRright ) && !(motion))
-	{
+	if((cachedPadValue & PADRright ) && !(motion))	{
 		motion = 1;
 	}
 }
@@ -265,20 +255,9 @@ void ballMotion() {
 	}
 
 	//detect hitting the bottom limit
-	if ((ballY+ballRad >= playerY) && (ballY+ballRad <= playerY+10)) {
-		if ((ballX-ballRad < playerX+playerSize) && (ballX+ballRad>playerX) )
-		{
-			hit = 'd';
-		}
-		else {
-			hit = 'z';
-			lives--;
-			initialiseScene();
-			return;
-		}
-	}
+	hit = checkPlayerHit(player1, ballX, ballRad, ballY);
 	//detect hitting the upper frame
-	else if (ballY-ballRad < framing) {
+	if (ballY-ballRad < framing) {
 		hit = 'u';
 		//velY = abs(velY);
 	}
@@ -290,6 +269,7 @@ void ballMotion() {
 		//velX = abs(velX);
 		hit = 'l';
 	}
+
 
 	switch (hit)
 	{
@@ -308,6 +288,11 @@ void ballMotion() {
 		case 'r': {
 			velX = -1*abs(velX);
 			break;
+		}
+		case 'k': {
+			lives--;
+			initialiseScene();
+			return;
 		}
 	}
 

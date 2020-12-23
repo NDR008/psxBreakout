@@ -11,8 +11,12 @@
 #pragma once
 
 #include <sys/types.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <libgte.h>
 #include <libgpu.h>
 #include <libgs.h>
+#include <libetc.h>
 
 #define OT_LENGTH 1
 #define PACKETMAX 300
@@ -43,7 +47,7 @@ typedef struct Box {
 	int type;
 } Box;
 
-typedef struct {
+typedef struct Image {
 	RECT rect;
 	RECT crect;
 	GsIMAGE tim_data;

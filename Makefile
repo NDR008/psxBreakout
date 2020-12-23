@@ -4,6 +4,7 @@ TYPE = exe
 SRCS = main.c \
 basics.c \
 timerz.c \
+logic.c \
 third_party/common/syscalls/printf.s \
 third_party/common/crt0/crt0.s \
 
