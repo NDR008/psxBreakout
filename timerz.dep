@@ -1,2 +1,0 @@
-timerz.o: timerz.c ../third_party/psyq/include/sys/types.h timerz.h \
- ../third_party/psyq/include/libetc.h

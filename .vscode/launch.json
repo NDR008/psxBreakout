@@ -12,7 +12,7 @@
             "gdbpath": "/usr/bin/gdb-multiarch",
             "cwd": "${workspaceRoot}",
             "autorun": [
-                "target remote 192.168.188.86:3333",
+                "target remote localhost:3333",
                 "monitor reset shellhalt",
                 "load cs50x.elf",
                 "tbreak main",
