@@ -138,6 +138,10 @@ But I also use the redux emulator (which you could compile from this source or d
 wget [http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z](http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z)  
 unzip to /pcsx-redux/src/mips/psyq/
 
+7) Made sure to run WSL2
+
+8) Set the json IP manually
+
 
 ## STUFF TO DO ##
 to do debugger - need to re-set it up

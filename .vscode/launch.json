@@ -13,9 +13,8 @@
             "cwd": "${workspaceRoot}",
             "autorun": [
                 "target remote 192.168.188.86:3333",
-                "symbol-file cs50x.elf",
+                "monitor reset shellhalt",
                 "load cs50x.elf",
-                "monitor reset halt",
                 "tbreak main",
                 "continue",
             ],
