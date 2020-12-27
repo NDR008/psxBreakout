@@ -95,7 +95,6 @@ int main() {
 		if (gameWon) {drawGameOver();}
 		else if (lives==-1) {drawGameOver();}
 		else draw();
-		printf("\nI am here");
 		display(); // dump it to the screen
 	}
 }
