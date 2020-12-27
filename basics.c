@@ -180,8 +180,9 @@ void setScreenMode(int mode) {
      	SetVideoMode(0);
      	if (DEBUG) printf("Video Mode is (%d)\n",GetVideoMode());
    }
-	GsInitGraph(SCREEN_WIDTH, SCREEN_HEIGHT, GsINTER|GsOFSGPU, 1, 0);
-	GsDefDispBuff(0, 0, 0, SCREEN_HEIGHT);
+   //double Init...
+	//GsInitGraph(SCREEN_WIDTH, SCREEN_HEIGHT, GsINTER|GsOFSGPU, 1, 0);
+	//GsDefDispBuff(0, 0, 0, SCREEN_HEIGHT);
 }
 
 void setBackgroundColor(Color color) {
