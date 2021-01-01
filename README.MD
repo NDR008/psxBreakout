@@ -1,7 +1,10 @@
 # PSX Breakout
 
 This is a simple program written in C for the PlayStation 1 (PSX). It is developed and tested in an enumulator but should be able to run on real hardware (not tested).
-
+Here is the first working game explanation I made to submit to HarvardX for the CS50 certification:  
+https://youtu.be/oKt2dAhkS7E
+  
+(The code in this repo is improved in temrs of collision detection and use of sprites).  
 
 # Motivation to do this 
 
