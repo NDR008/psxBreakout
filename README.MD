@@ -1,7 +1,7 @@
 # PSX Breakout
-
-
-
+  
+![Screenshot](psxBreakout_v1.0.png "Version 1.0")  
+  
 This is a simple program written in C for the PlayStation 1 (PSX). It is developed and tested in an enumulator but should be able to run on real hardware (not tested).
 Here is the first working game explanation I made to submit to HarvardX for the CS50 certification:  
 https://youtu.be/oKt2dAhkS7E
@@ -164,4 +164,4 @@ Nicolas and Sickle helped a lot with getting the SDK working under gcc-mipsel.
 Schnappy, Nicolas, Wituz, Sickle, Danhans42, Lameguy64, and many others helped here and there with coding issues especially those related to PSX development.  
 Final thanks to the people that came way before me at reverse engineering a lot of the PSX to have a clue where to begin with.  
   
-![It works!](/sickle_test_onHW.jpg "This is a sample image of it running on a real PSX.")
+![It works!](sickle_test_onHW.jpg "This is a sample image of it running on a real PSX.")
