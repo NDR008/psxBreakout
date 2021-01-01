@@ -117,6 +117,7 @@ Variable brick sizes. (can be done but... a lot of rework)
 
 # Setting Up My Machine
 An imperfect write up to get started.
+(A more up to date set is here: https://github.com/NDR008/VSCodePSX)
 
 1) Enable WSL from the powershell  
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
@@ -143,10 +144,6 @@ But I also use the redux emulator (which you could compile from this source or d
 6) This is the converted psyq libs  
 wget [http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z](http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z)  
 unzip to /pcsx-redux/src/mips/psyq/
-
-7) Made sure to run WSL2
-
-8) Set the json IP manually
 
 
 ## STUFF TO DO ##
