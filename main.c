@@ -1,3 +1,10 @@
+/*
+ * basics.c
+ *
+ *  Created on: Dec 19, 2020
+ *      Author: CodingSpirit
+ */
+
 #include <sys/types.h>
 #include <libetc.h>
 #include <libpad.h>
@@ -81,6 +88,7 @@ Image ballSprite;
 Image playerSprite;
 Image bgSprite;
 unsigned long cachedPadValue;
+unsigned long previousCachedPadValue;
 
 int pause=0;
 
@@ -171,6 +179,7 @@ void draw() {
 
 void updateControls() {
 	cachedPadValue = PadRead(0);
+	previousCachedPadValue = cachedPadValue;
 	int speed;
 
 	if((cachedPadValue & PADstart ) && (motion)) {
