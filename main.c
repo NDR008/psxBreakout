@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <libetc.h>
 #include <libpad.h>
+#include <hardware/pcsxhw.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <libgte.h>
@@ -94,7 +95,7 @@ int pause=0;
 
 int main() {
 	initialize();
-
+	printf("isPCSX: %s\n", pcsx_present() ? "yes" : "no");
 	while(1) {
 		//printf("\nballX: %d, playerX: %d", ballX, playerX);
 		TrialTimer=incTimer(TrialTimer);
