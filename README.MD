@@ -141,9 +141,7 @@ Copied several files (especially crt0.s)
 More recently, I adapted this crt0.s and ld files from [here](https://github.com/JonathanDotCel/helloworld_and_flappycredits/tree/master/nugget)
 But I also use the redux emulator (which you could compile from this source or download his builds).
 
-6) This is the converted psyq libs  
-wget [http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z](http://psx.arthus.net/sdk/Psy-Q/psyq-4.7-converted-full.7z)  
-unzip to /pcsx-redux/src/mips/psyq/
+6) Find the libraries needed...
 
 
 ## STUFF TO DO ##
