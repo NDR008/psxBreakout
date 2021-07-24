@@ -1,5 +1,5 @@
 TARGET = cs50x
-TYPE = exe
+TYPE = ps-exe
 
 SRCS = main.c \
 basics.c \
